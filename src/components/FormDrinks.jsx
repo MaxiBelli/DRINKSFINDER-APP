@@ -4,14 +4,14 @@ import useCategories from "../hooks/useCategories";
 import useDrinks from "../hooks/useDrinks";
 
 const FormDrinks = () => {
+
   const [search, setSearch] = useState({
     name: "",
     category: "",
   });
   const [alert, setAlert] = useState("");
-
   const { categories } = useCategories();
-  const { fetchDrinks } = useDrinks();
+  const { fetchDrink } = useDrinks();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -20,7 +20,7 @@ const FormDrinks = () => {
       return;
     }
     setAlert("");
-    fetchDrinks(search);
+    fetchDrink(search);
   };
 
   return (
@@ -30,10 +30,12 @@ const FormDrinks = () => {
           {alert}
         </Alert>
       )}
+
       <Row>
         <Col md={6}>
           <Form.Group className="mb-3">
             <Form.Label htmlFor="name">Drink Name</Form.Label>
+
             <Form.Control
               id="name"
               type="text"
@@ -52,6 +54,7 @@ const FormDrinks = () => {
         <Col md={6}>
           <Form.Group className="mb-3">
             <Form.Label htmlFor="category">Drink Category</Form.Label>
+
             <Form.Select
               id="category"
               name="category"
@@ -73,6 +76,7 @@ const FormDrinks = () => {
           </Form.Group>
         </Col>
       </Row>
+
       <Row className="justify-content-end">
         <Col md={3}>
           <Button
@@ -87,5 +91,4 @@ const FormDrinks = () => {
     </Form>
   );
 };
-
 export default FormDrinks;

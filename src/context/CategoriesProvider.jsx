@@ -1,7 +1,6 @@
 import { useState, useEffect, createContext } from "react";
 import axios from "axios";
 
-
 const CategoriesContext = createContext();
 
 const CategoriesProvider = ({ children }) => {
@@ -23,7 +22,11 @@ const CategoriesProvider = ({ children }) => {
   }, []);
 
   return (
-    <CategoriesContext.Provider value={{categories}}>
+    <CategoriesContext.Provider
+      value={{
+        categories,
+      }}
+    >
       {children}
     </CategoriesContext.Provider>
   );
