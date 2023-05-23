@@ -1,11 +1,31 @@
-import { Form, Row, Col, Button } from "react-bootstrap";
+import { useState } from "react";
+import { Form, Row, Col, Button, Alert } from "react-bootstrap";
 import useCategories from "../hooks/useCategories";
 
 const FormDrinks = () => {
+  const [search, setSearch] = useState({
+    name: "",
+    category: "",
+  });
+  const [alert, setAlert] = useState("");
   const { categories } = useCategories();
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (Object.values(search).includes("")) {
+      setAlert("All fields are required");
+      return;
+    }
+    setAlert("");
+  };
+
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
+      {alert && (
+        <Alert variant="danger" className="text-center">
+          {alert}
+        </Alert>
+      )}
       <Row>
         <Col md={6}>
           <Form.Group className="mb-3">
@@ -15,13 +35,30 @@ const FormDrinks = () => {
               type="text"
               placeholder="E.g. Tequila, Vodka, etc"
               name="name"
+              value={search.name}
+              onChange={(e) =>
+                setSearch({
+                  ...search,
+                  [e.target.name]: e.target.value,
+                })
+              }
             />
           </Form.Group>
         </Col>
         <Col md={6}>
           <Form.Group className="mb-3">
             <Form.Label htmlFor="category">Drink Category</Form.Label>
-            <Form.Select id="category" name="category">
+            <Form.Select
+              id="category"
+              name="category"
+              value={search.category}
+              onChange={(e) =>
+                setSearch({
+                  ...search,
+                  [e.target.name]: e.target.value,
+                })
+              }
+            >
               <option>- Select Category -</option>
               {categories.map((category) => (
                 <option key={category.strCategory} value={category.strCategory}>
