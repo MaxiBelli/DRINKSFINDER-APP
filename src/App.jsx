@@ -2,12 +2,13 @@ import { Container } from "react-bootstrap";
 import FormDrinks from "./components/FormDrinks";
 import DrinkList from "./components/DrinkList";
 import DrinkModal from "./components/DrinkModal";
-import { CategoriesProvider } from "./context/CategoriesProvider";
+import { OptionsProvider } from "./context/OptionsProvider";
 import { DrinksProvider } from "./context/DrinksProvider";
 
 function App() {
   return (
-    <CategoriesProvider>
+ 
+    <OptionsProvider>
       <DrinksProvider>
         <header className="py-5">
           <h1>Drinks Finder</h1>
@@ -18,7 +19,8 @@ function App() {
           <DrinkModal/>
         </Container>
       </DrinksProvider>
-    </CategoriesProvider>
+    </OptionsProvider>
+
   );
 }
 

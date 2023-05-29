@@ -10,6 +10,29 @@ const DrinksProvider = ({ children }) => {
   const [recipe, setRecipe] = useState({});
   const [loading, setLoading] = useState(false);
 
+  const fetchDrink = async (info) => {
+    try {
+      const urlIngredient = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${info.ingredient}`;
+      const urlCategory = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${info.category}`;
+      const responseIngredient = await axios(urlIngredient);
+      const responseCategory = await axios(urlCategory);
+
+      const drinksIngredient = responseIngredient.data.drinks;
+      const drinksCategory = responseCategory.data.drinks;
+
+      const matchingDrinks = drinksIngredient.filter((drinkIngredient) =>
+        drinksCategory.some(
+          (drinkCategory) => drinkCategory.strDrink === drinkIngredient.strDrink
+        )
+      );
+
+      setDrinks(matchingDrinks);
+      console.log(matchingDrinks);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     setLoading(true);
     const getRecipe = async () => {
@@ -27,17 +50,6 @@ const DrinksProvider = ({ children }) => {
     };
     getRecipe();
   }, [drinkId]);
-
-  const fetchDrink = async (info) => {
-    try {
-      const url = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${info.name}&c=${info.category}`;
-
-      const { data } = await axios(url);
-      setDrinks(data.drinks);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const handleModalClick = () => {
     setModal(!modal);

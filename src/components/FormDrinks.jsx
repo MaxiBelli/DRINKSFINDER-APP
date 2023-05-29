@@ -1,16 +1,23 @@
 import { useState } from "react";
-import { Form, Row, Col, Button, Alert } from "react-bootstrap";
-import useCategories from "../hooks/useCategories";
+import {
+  Form,
+  Row,
+  Col,
+  Button,
+  Alert,
+  InputGroup,
+  FormControl,
+} from "react-bootstrap";
+import UseOptions from "../hooks/useOptions";
 import useDrinks from "../hooks/useDrinks";
 
 const FormDrinks = () => {
-
   const [search, setSearch] = useState({
-    name: "",
+    ingredient: "",
     category: "",
   });
   const [alert, setAlert] = useState("");
-  const { categories } = useCategories();
+  const { categories, ingredients } = UseOptions();
   const { fetchDrink } = useDrinks();
 
   const handleSubmit = (e) => {
@@ -34,27 +41,42 @@ const FormDrinks = () => {
       <Row>
         <Col md={6}>
           <Form.Group className="mb-3">
-            <Form.Label htmlFor="name">Drink Name</Form.Label>
-
-            <Form.Control
-              id="name"
-              type="text"
-              placeholder="E.g. Tequila, Vodka, etc"
-              name="name"
-              value={search.name}
-              onChange={(e) =>
-                setSearch({
-                  ...search,
-                  [e.target.name]: e.target.value,
-                })
-              }
-            />
+            <Form.Label htmlFor="ingredient">Drink Ingredient</Form.Label>
+            <InputGroup>
+              <FormControl
+                id="ingredient"
+                type="text"
+                placeholder="E.g. Vodka, Tequila, Coffee, etc"
+                name="ingredient"
+                value={search.ingredient}
+                onChange={(e) =>
+                  setSearch({
+                    ...search,
+                    [e.target.name]: e.target.value,
+                  })
+                }
+                list="ingredientOptions"
+              />
+              <datalist id="ingredientOptions">
+                {ingredients
+                  .sort((a, b) =>
+                    a.strIngredient1.localeCompare(b.strIngredient1, "en", {
+                      sensitivity: "base",
+                    })
+                  )
+                  .map((ingredient) => (
+                    <option
+                      key={ingredient.strIngredient1}
+                      value={ingredient.strIngredient1}
+                    />
+                  ))}
+              </datalist>
+            </InputGroup>
           </Form.Group>
         </Col>
         <Col md={6}>
           <Form.Group className="mb-3">
             <Form.Label htmlFor="category">Drink Category</Form.Label>
-
             <Form.Select
               id="category"
               name="category"
@@ -91,4 +113,5 @@ const FormDrinks = () => {
     </Form>
   );
 };
+
 export default FormDrinks;
